@@ -1,0 +1,394 @@
+
+/* This file is in the www, for testing. after it's done,
+   put it in the original THEMES directory of simplystatic/data 
+*/
+
+/* ============================== */
+/* ! CSS RESETS                   */
+/* ============================== */
+
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,address,cite,code,del,dfn,
+em,img,ins,q,small,strong,sub,sup,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,
+tfoot,thead,tr,th,td {
+    border:0;
+    margin:0;
+    padding:0
+}
+
+article,aside,figure,figure img,figcaption,hgroup,footer,header,nav,section,video,object {
+    display:block
+}
+
+a img {
+    border:0
+}
+
+figure {
+    position:relative
+}
+
+figure img {
+    width:100%
+}
+
+/* ============================== */
+/* ! FONTS                        */
+/* ============================== */
+
+@font-face {
+    font-family: Cicle-Gordita;
+    src: url('fonts/Cicle_Gordita.ttf')  format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: Cicle-Fina;
+    src: url('fonts/Cicle_Fina.ttf')  format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* ============================== */
+/* ! GENERAL                      */
+/* ============================== */
+
+body { 
+    width: 100%;
+    font-size: 120%;
+    background-color:  #f7f4e9;
+    font-family: Cicle-Fina;
+    letter-spacing: 0.2em;
+}
+
+.content {
+    background-color:  #FAF9F5;
+}
+
+article.page-content {
+    margin-left: 1.5em;
+    margin-right: 1.5em;
+}
+
+/* ============================== */
+/* ! HEADER                       */
+/* ============================== */
+
+header {
+    width: 90%;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 0.2em;
+}
+
+.title-band {
+    background: url('header1.jpg');
+    margin-right: auto;
+    margin-left: auto;
+    width: 100%;
+    overflow: auto;
+}
+
+.title-band .site-title {
+    float: left;
+    margin-left: 2em;
+    font-family: Cicle-Gordita;
+    font-size: 1.4em;
+}
+
+.title-band .site-title a {
+    text-decoration: none;
+    color: #eee;
+}
+.title-band .site-title a:visited {
+    color: #eee;
+}
+
+.title-band .site-byline {
+    float: right;
+    margin-right: 6em;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    color: #ddd;
+    font-size: 1em;
+}
+
+.title-band .site-byline a {
+    text-decoration: none;
+    color: #555;
+}
+.title-band .site-byline a:visited {
+    color: #555;
+}
+
+.site-image {
+    display: none;
+}
+
+div.navbar {
+    background-color: #bf636e;
+    overflow: hidden;
+}
+
+nav.main-nav {
+    float: left;
+    overflow: hidden;
+}
+
+nav a{
+    padding-left: 1em;
+    padding-right: 1em;
+    text-decoration: none;
+    color: #eee;
+    vertical-align: middle;
+}
+
+
+nav.social-nav {
+    float: right;
+}
+
+nav.social-nav a{
+    text-decoration: none;
+}
+
+/* ============================== */
+/* ! FOOTER                       */
+/* ============================== */
+
+
+footer {
+    width: 90%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 2%;
+    margin-bottom: 5%;
+    text-align: center;
+    padding-top: 1.8%;
+    color: #222222;
+    letter-spacing: 0.05em;
+    line-height: 1.8em;
+}
+
+footer a{
+    text-decoration: none;
+    color: #bf636e;
+}
+
+/* ============================== */
+/* ! CONTENT                      */
+/* ============================== */
+
+div.content {
+    width: 90%;
+    margin-right: auto;
+    margin-left: auto;
+    overflow: auto;
+    color: #333333;
+}
+
+div.content article.page-content {
+    margin-bottom: 2%;
+    line-height: 2.0em;
+    text-align: justify;
+}
+
+div.content article.page-content p {
+    margin-bottom: 1.6%;
+}
+
+article.page-content h1, h2, h3 {
+    letter-spacing: 0.1em
+}
+
+article.page-content h1 {
+    font-size: 1.5em;
+    margin-top: 2.0em;
+    margin-bottom: 0.4em;
+}
+article.page-content h2 {
+    font-size: 1.2em;
+    margin-top: 2em;
+    margin-bottom: 0.4em;
+    border-bottom: 0.1em solid #ddd;
+}
+article.page-content h3 {
+    font-size: 1.0em;
+    margin-top: 0.6em;
+    margin-bottom: 0.4em;
+}
+
+
+article.page-content {
+    letter-spacing: 0.05em;
+}
+
+article.page-content p.lead {
+    margin-top: 3%;
+}
+
+
+/* ============================== */
+/* ! STYLES FOR FRONT PAGES       */
+/* ============================== */
+
+div.frontpage {
+    width: 100%;
+}
+
+
+div.articlebox:first-of-type {
+    border-top: 0px;
+}
+
+div.articlebox {
+    width: 100%;
+    border-bottom: 0.1em solid #ddd;
+    border-top: 1px solid #fff;
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+}
+
+
+div.articleref {
+    width: inherit;
+    margin-left: auto;
+    margin-right: auto;
+    color: #222;
+    letter-spacing: 0.1em;
+}
+
+div.articleref div.date {
+    margin-top: 0.8em;
+}
+
+div.articleref a {
+    text-decoration: none;
+    color: #222;
+    font-family: Cicle-Gordita;
+    font-weight: bold;
+}
+
+div.articleref a:visited {
+    text-decoration: none;
+    color: #666;
+}
+
+nav.article-nav {
+    text-align: center;
+    margin-top: 0.8em;
+}
+
+nav.article-nav a.back{
+
+    text-decoration: none;
+    color: rgba(12,108,184,0.93);
+    font-family: OpenSans-Bold;
+}
+
+nav.front-nav {
+    overflow: auto;
+    width: 100%;
+    position: relative;
+    margin-top: 1.2em;
+    margin-top: 1.2em;
+}
+
+nav.front-nav a{
+    text-decoration: none;
+    color: rgba(12,108,184,0.93);
+    font-family: OpenSans-Bold;
+}
+
+nav.front-nav a.next{
+    float: right;
+}
+
+nav.front-nav a.prev{
+    float: left;
+}
+
+
+/* ==========================================================================
+   Media Queries
+   ========================================================================== */
+
+
+@media only screen and (min-width: 30em) {
+
+}
+
+
+@media only screen and (min-width: 37.5em) {
+
+    div.articlebox {
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        border-bottom: 0.1em solid #ddd;
+        border-top: 1px solid #fff;
+        padding-top: 1.6em;
+        padding-bottom: 1.6em;
+    }
+
+    
+}
+
+
+@media only screen and (min-width: 48em) {
+    header h1 {
+        font-size: 2.5em;
+    }
+
+}
+
+/*
+
+@media only screen and (min-width: 56.25em) {
+       header h1 {
+        font-size: 2.5em;
+    }
+
+}
+
+
+@media only screen and (min-width: 68.75em) {
+    body {
+        font-size: 2.2em;
+    }    
+
+}
+
+@media only screen and (min-width: 81.25em) {
+    body {
+        font-size: 2em;
+    }    
+
+}
+*/
+
+/*
+em breakpoints guide (min-width):
+em: 20,  30,  37.5, 48,  56.25, 68.75, 81.25
+px: 320, 480, 600, 768 , 900,   1100, 1300 
+*/
+
+@media print {
+    body {
+      font-size: 70%;
+      color: #000;
+      background: #fff;
+    }
+    .title-nav-block .main-nav  {
+        display: none;
+    }
+    .site-image {
+        display: none;
+    }
+    article.page-content h2 {
+        border-bottom: none; 
+    }
+    footer {
+        display: none;
+    }
+}

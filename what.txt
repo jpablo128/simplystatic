@@ -1,1 +1,0 @@
-This is my development site for my SimplyStatic static site generator.
