@@ -10,11 +10,22 @@ s2 has been developed and tested in Ubuntu 12.04, with Python 2.7.
 
 # Installation
 
-I haven't uploaded SimplyStatic to PyPI yet. You can get the source and then install from it:
+If you have `pip` installed:
+
+    ~$ sudo pip install simplystatic
+
+Or you can use `easy_install` instead:
+
+    ~$ sudo easy_install simplystatic
+
+
+You can also clone the github repo and install from it:
 
     ~$ git clone git://github.com/jpablo128/SimplyStatic.git
     ~$ cd simplystatic
     ~$ sudo python setup.py install
+
+**Note**: If you are using virtual environments, get into the virtual environment where you want to install and don't use `sudo`!
 
 # Basics
 
