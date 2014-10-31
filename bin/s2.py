@@ -173,7 +173,7 @@ def do_gen(argdict):
         site.generate()
         et = time.time()
         print "Generated Site in %f seconds."% (et-st)
-    except ValueError: # pragma: no cover
+    except ValueError as e: # pragma: no cover
         print "Cannot generate. You are not within a simplystatic \
 tree and you didn't specify a directory."
 

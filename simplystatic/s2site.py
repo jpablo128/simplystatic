@@ -40,8 +40,8 @@ def verify_dir_structure(full_path):
         return False
     r = True
     for d2c in PREDEFINED_DIR_NAMES:
-        if d2c == "s2":
-            d2c = ".s2"
+        #if d2c == "s2":
+        #    d2c = ".s2"
         cp2c = os.path.join(full_path, d2c)  #complete path to check
         if not os.path.isdir(cp2c):
             r = False
@@ -69,19 +69,19 @@ def dir_empty(d):
     return (len(flist) == 0)
 
 def is_base_dir(d):
-    '''True if the dir is valid and it contains a dir called .s2'''
+    '''True if the dir is valid and it contains a dir called s2'''
     if not dir_param_valid(d): # pragma: no cover
         raise 
     else:
-        mfn = os.path.join(d,'.s2') #marker name. it must be a directory.
+        mfn = os.path.join(d,'s2') #marker name. it must be a directory.
         return os.path.isdir(mfn)
 
 def discover_base_dir(start_dir):
-    '''Return start_dir or the parent dir that has the .s2 marker.
+    '''Return start_dir or the parent dir that has the s2 marker.
 
     Starting from the specified directory, and going up the parent
     chain, check each directory to see if it's a base_dir (contains
-    the "marker" directory *.s2*) and return it. Otherwise, return
+    the "marker" directory *s2*) and return it. Otherwise, return
     the start_dir.
 
     '''
@@ -124,14 +124,14 @@ class Site(object):
             common
             themes
             www
-            .s2
+            s2
 
     When an instance of this class is initialized the caller can 
     specify an initial directory, which is what we've called 
     <site directory>. If specified, the directory must exist. Under this
     directory there will eventually exist five other directories:
 
-        - .s2:    It is empty. This directory is just a "marker" that is
+        - s2:    It is empty. This directory is just a "marker" that is
                   automatically created when the site structure is 
                   initialized.
 
@@ -178,7 +178,7 @@ class Site(object):
                        If it is not empty, it will be assigned to the
                        instance variable base_dir. If it is empty, the
                        program will try to find a "base_dir" (a 
-                       directory that has the .s2 directory marker)
+                       directory that has the s2 directory marker)
                        starting from the current working directory
                        upwards.
 
@@ -224,10 +224,10 @@ class Site(object):
         if self._dirs['base'] != None:
             for d in self._predefined_dir_names:
                 dstr = d
-                if d == "s2":
-                    dstr = '.'+d
+                #if d == "s2":
+                #    dstr = '.'+d
                 self._dirs[d] = os.path.join(self._dirs['base'], dstr) 
-            # self._dirs['s2'] = os.path.join(self._dirs['base'],'.s2')
+            # self._dirs['s2'] = os.path.join(self._dirs['base'],'s2')
             # self._dirs['www'] = os.path.join(self._dirs['base'],'www')
             # self._dirs['source'] = os.path.join(self._dirs['base'],'source')
             # self._dirs['common'] = os.path.join(self._dirs['base'],'common')
@@ -242,7 +242,7 @@ class Site(object):
 
         This operation creates the directories, copies any existing 
         templates to the source_dir and common_dir, and creates the 
-        default configuration file within the directory .s2
+        default configuration file within the directory s2
 
         '''
         if self._dirs['base'] != None:  # pragma: no cover 
@@ -315,7 +315,6 @@ class Site(object):
             else:
                 shutil.copy(fo, self.dirs['www'])
 
-
         # init atom file
         title = self.site_config['site_title']
         if title == '':
@@ -329,7 +328,7 @@ class Site(object):
 
         themes_to_copy = []  # full paths!
         generated_page_info = []
-        for slug in self._pages_to_generate():  #this list of pages is in reveres chrono order
+        for slug in self._pages_to_generate():  #this list of pages is in reverse chrono order
             p = s2page.Page(self, slug, isslug=True)
             generated_page_info.append( {'slug': p.slug,
                                          'title':p.title,
@@ -382,14 +381,14 @@ class Site(object):
         self._generate_site_map(generated_page_info)
 
 
-    def generate_front(self,generated_page_info,epp=10):
+    def generate_front(self,generated_page_info, epp=10):
         themepath = "../themes/" + self.site_config['default_theme'] +'/'
 
         commonpath = self._dirs['common']
         template_path = os.path.join(self._dirs['themes'],
                                      self.site_config['default_theme'],
                                      self.site_config['default_template'])
-        makotemplate = Template(filename = template_path,
+        makotemplate = Template(filename=template_path,
                                 module_directory=self._makodir)
 
         generated_page_info = sorted(generated_page_info, key=lambda x : x['date'],reverse=True)
@@ -406,17 +405,18 @@ class Site(object):
             else:
                 fname = str(i) + '.html'
             fullpath = os.path.join(self._dirs['www'],fname)
-            fout = open(fullpath,'w')
+
+            fout = codecs.open(fullpath, "w", encoding="utf-8", errors="xmlcharrefreplace")
             fout.write(rendition)
             fout.close()
 
-    def renderfront_chronological_plain(self,generated_page_info,epp=10):
+    def renderfront_chronological_plain(self,generated_page_info, epp=10):
         # renderfront methods should return an iterator
         # gpi is [{'slug': p.slug, 'title': p.title, 'date': p.creation_date },...]
         innertemplate_path = os.path.join(self._dirs['themes'],
                                      self.site_config['default_theme'],
                                      "chronological_plain_front.tpl")
-        innertemplate = Template(filename = innertemplate_path,
+        innertemplate = Template(filename=innertemplate_path,
                                 module_directory=self._makodir)
 
         # divide the generated page info in slices of size epp
@@ -448,7 +448,7 @@ class Site(object):
     def _set_fixed_frontpage(self,ff):
         target = os.path.join(self._dirs['www'],ff, "index.html")
         if not os.path.isfile(target):
-            print "Value for fixed_frontpage in site configuration (.s2/config.yml) is not a valid page."
+            print "Value for fixed_frontpage in site configuration (s2/config.yml) is not a valid page."
             raise ValueError
         link_name = os.path.join(self._dirs['www'],"index.html")
         os.symlink(target, link_name)
@@ -553,7 +553,6 @@ object.'''
                 'default_template': 'main.html.tpl',
                 'fixed_frontpage': ''
               }
-
 
 
         file_name = os.path.join(self._dirs['s2'],'config.yml')

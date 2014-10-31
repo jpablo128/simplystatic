@@ -306,7 +306,7 @@ class TestInitStructure(unittest.TestCase):
     def test_inst_should_add_default_config(self):
         s = s2site.Site(self.temp_dir)
         s.init_structure()
-        sfs = glob.glob(os.path.join(s.dirs['s2'],"*"))
+        sfs = glob.glob(os.path.join(s.dirs['base'],"*"))
         sfs = [os.path.split(p)[1] for p in sfs]
         self.assertTrue('config.yml' in sfs,"init_structure did not create the config file.")
 

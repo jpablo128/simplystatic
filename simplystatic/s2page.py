@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 """This module provides functionality to manage a Page entity.
 
@@ -15,8 +14,10 @@ import datetime
 import glob
 import shutil
 import codecs
+import uuid
 
 from mako.template import Template
+from mako.lookup import TemplateLookup
 from mako.runtime import Context
 from StringIO import StringIO
 
@@ -100,7 +101,7 @@ class Page(object):
         """Create a page with this title, if it doesn't exist.
 
         This method first checks whether a page with the same slug
-        (sanitized name) exists_on_disk. If it does, it doesn't do anthing.
+        (sanitized name) exists_on_disk. If it does, it doesn't do antyhing.
         Otherwise, the relevant attributes are created.
         Nothing is written to disc (to the source file). You must call
         the write_page method to do that. Doing it this way, after
@@ -195,7 +196,11 @@ class Page(object):
 
         """
         (pthemedir, ptemplatefname) = self._theme_and_template_fp()
-        makotemplate = Template(filename=ptemplatefname,
+
+        mylookup = TemplateLookup(directories=[self.site.dirs['s2'], pthemedir],input_encoding='utf-8',output_encoding='utf-8')
+
+
+        makotemplate = Template(filename=ptemplatefname, lookup=mylookup,
                                 module_directory=self.site._makodir)
 
         # I don't really need to use the meta extension here, because I render self._content (has no metadata)
@@ -214,10 +219,40 @@ class Page(object):
         #                        commonPath=commonpath))
         #makotemplate.render_context(ctx)
         #rendition = buf.getvalue()
+
+        # IS THERE `PIWIK CODE?
+        # IS THERE DISQUS CODE?
+        # READ from s2 if there's disqus_code.html.tpl and piwik_code.html.tpl
+        # if there's piwik, just define the variable piwik_code with its contents
+        # if there's disqus... nested render?
+        # HERE I NEED TO DIRECTLY INCLUDE A TEMPLATE IN ANOTHER TEMPLATE!!! MAKO!
+        #d_sn = self.site.site_config['disqus_shortname']
+        #if d_sn:   # the site uses disqus
+        piwik_code = None
+        disqus_code, disqus_shortname, disqus_identifier, disqus_title, disqus_url= None, None, None, None, None
+
+        piwik_code_tpl = os.path.join(self.site.dirs['s2'],'piwik_code.html.tpl')
+        if os.path.isfile(piwik_code_tpl):
+            piwik_code = '/piwik_code.html.tpl'
+
+        disqus_code_tpl = os.path.join(self.site.dirs['s2'],'disqus_code.html.tpl')
+        if os.path.isfile(disqus_code_tpl):
+            disqus_code = '/disqus_code.html.tpl'
+            disqus_shortname = self.site.site_config['disqus_shortname']
+            disqus_identifier = self._config['page_id'][0]
+            disqus_title = self.title
+            disqus_url = os.path.join(self.site.site_config['site_url'],self._slug)
+
         rendition = makotemplate.render(pageContent=page_html,isFrontPage=False,
-                                         themePath=themepath,
-                                         commonPath=commonpath,
-                                         pageTitle=self.title)
+                                        themePath=themepath,
+                                        commonPath=commonpath,
+                                        pageTitle=self.title,
+                                        piwik_code=piwik_code,
+                                        disqus_code=disqus_code,
+                                        disqus_shortname = disqus_shortname,
+                                        disqus_identifier = disqus_identifier,
+                                        disqus_url = disqus_url,
+                                        disqus_title= disqus_title)
         return rendition
 
     # test generate should copy all other pages and dirs in the page
@@ -230,7 +265,7 @@ class Page(object):
 
         """
         generated_content = ''
-        if (self._config['status'][0]).lower() == 'published':
+        if 'published' in (self._config['status'][0]).lower():
             if os.path.isdir(self.dirs['www_dir']):
                 shutil.rmtree(self.dirs['www_dir'])
             os.mkdir(self.dirs['www_dir'])
@@ -273,7 +308,9 @@ class Page(object):
                       'title': [self._title],
                       'slug': [self._slug],
                       'theme': [u''],
-                      'template': [u'']}  # when theme and template are empty, the generator uses the defaults. Thus, initially
+                      'template': [u''],
+                      'page_id': [uuid.uuid4().hex]
+                      }  # when theme and template are empty, the generator uses the defaults. Thus, initially
                                           # they should be empty, to allow for global changes just by changing the site config files.
         return configinfo
 
@@ -315,7 +352,8 @@ class Page(object):
                          'title',
                          'slug',
                          'theme',
-                         'template']
+                         'template',
+                         'page_id']
         isok = True
         # exclude some statements from coverage analysis. I would need to
         # refactor how the config is loaded/handled etc. It's not worth
