@@ -149,7 +149,7 @@ tree and you didn't specify a directory."
         new_page = site.add_page(title)
         new_page.write()
         print "Added page '"+ title + "'"
-    except ValueError: # pragma: no cover
+    except ValueError as e: # pragma: no cover
         print "Attempted to create a page which already exists."
         sys.exit()
 

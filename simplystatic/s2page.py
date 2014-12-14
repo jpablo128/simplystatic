@@ -115,7 +115,7 @@ class Page(object):
             #print "Attempted to create a page which already exists."
             #return False
 
-        self._title = rawtitle
+        self._title = unicode(rawtitle,"UTF-8")
         self._slug = slug
 
         self._dirs['source_dir'] = os.path.join(self.site.dirs['source'], slug)
@@ -138,7 +138,8 @@ class Page(object):
         """
         if not os.path.isdir(self._dirs['source_dir']):
             os.mkdir(self._dirs['source_dir'])
-        fout = open(self._dirs['source_filename'], 'w')
+
+        fout = codecs.open(self._dirs['source_filename'], 'w', encoding="utf-8", errors="xmlcharrefreplace")
         fout.write(self._config_to_text())
         if self._content:
             fout.write('\n')
@@ -197,7 +198,7 @@ class Page(object):
         """
         (pthemedir, ptemplatefname) = self._theme_and_template_fp()
 
-        mylookup = TemplateLookup(directories=[self.site.dirs['s2'], pthemedir],input_encoding='utf-8',output_encoding='utf-8')
+        mylookup = TemplateLookup(directories=[self.site.dirs['s2'], pthemedir], input_encoding='utf-8', output_encoding='utf-8')
 
 
         makotemplate = Template(filename=ptemplatefname, lookup=mylookup,
@@ -418,12 +419,15 @@ class Page(object):
 
     def _config_to_text(self):
         """Render the configuration as text."""
-        r = ''
+        r = u'' # unicode('',"UTF-8")
         for k in self._config:
             # if k == 'creation_date':
             #     r +=  k + ": " + self._config[k][0] + '\n'
             # else:
-            r +=  k + ": " + '\n        '.join(self._config[k]) + '\n'
+            #uk = unicode(k,"UTF-8")
+            cosa = '\n        '.join(self._config[k]) + '\n'
+            r += k + ": " + cosa
+            #r += k + ": " + '\n        '.join(self._config[k]) + '\n'
         r += '\n'
         return r
 
@@ -453,9 +457,14 @@ class Page(object):
         return self._title
 
     @property
+    def in_toc(self):
+        """Return true if the page should be included in the TOC, return false otherwise"""
+        return not 'no-toc' in (self._config['status'][0]).lower()
+
+    @property
     def published(self):
         """Return if the page is published or not"""
-        return (self._config['status'][0]).lower() == 'published'
+        return 'published' in (self._config['status'][0]).lower()
 
     @property
     def creation_date(self):

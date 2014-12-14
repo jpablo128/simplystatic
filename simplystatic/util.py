@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #!/usr/bin/python
 
 '''Provide some text utilities.
@@ -29,13 +30,18 @@ import subprocess
 
 def make_slug(rawname):
     sname = rawname
-    ic = string.punctuation.replace("_","")  # ic = invalid chars, we remove the underscore
+    sname =  sname.replace('á', 'a').replace('é', 'e').replace('í', 'i').replace('ó', 'o').replace('ú', 'u')
+    sname =  sname.replace('Á', 'A').replace('É', 'E').replace('Í','I').replace('Ó','O').replace('Ú','U')
+    #remove other non-ascii chars if there are any
+    sname = ''.join([i if ord(i) < 128 else ' ' for i in sname])
+    ic = string.punctuation.replace("_", "")  # ic = invalid chars, we remove the underscore
     #remove all punctuation symbols
     for ps in ic: 
         if ps in sname:
             sname = sname.replace(ps,"")
-    sname = ('_'.join(sname.split())).lower() 
-    return sname
+    sname = ('_'.join(sname.split())).lower()
+
+    return unicode(sname,"UTF-8")
 
 def random_title(withuuid=True):
     c = Chomsky()

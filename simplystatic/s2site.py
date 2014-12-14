@@ -332,7 +332,8 @@ class Site(object):
             p = s2page.Page(self, slug, isslug=True)
             generated_page_info.append( {'slug': p.slug,
                                          'title':p.title,
-                                         'date': p.creation_date } ) 
+                                         'date': p.creation_date,
+                                         'in_toc': p.in_toc })
             t = p.theme_path
             if not t in themes_to_copy:
                 themes_to_copy.append(t)
@@ -391,6 +392,8 @@ class Site(object):
         makotemplate = Template(filename=template_path,
                                 module_directory=self._makodir)
 
+        # remove pages which should not be in TOC
+        generated_page_info = [gpi for gpi in generated_page_info if gpi['in_toc']]
         generated_page_info = sorted(generated_page_info, key=lambda x : x['date'],reverse=True)
         frontpage_iterator = self.renderfront_chronological_plain(generated_page_info,epp)
         i = 0
